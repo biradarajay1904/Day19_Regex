@@ -8,12 +8,16 @@ public class regrexPattern {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the Last name : ");
-		String LastName = sc.nextLine();
+		String lastName = sc.nextLine();
 	
 		
 		
-		boolean validateLastName  = Pattern.matches("^[A-Z]{1}[a-z]{2,20}$",LastName);  
-		System.out.println(validateLastName );
+		boolean validatelastName  = Pattern.matches("^[A-Z]{1}[a-z]{2,20}$",lastName);  
+		if (validatelastName) {
+		System.out.println("password is correct ");
+	} else {
+		System.out.println("password is incorrect ");
+	}
 	}
 
 }
