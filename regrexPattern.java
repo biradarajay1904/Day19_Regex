@@ -7,13 +7,13 @@ public class regrexPattern {
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter the First name : ");
-		String FirstName = sc.nextLine();
+		System.out.println("Enter the Last name : ");
+		String LastName = sc.nextLine();
 	
 		
 		
-		boolean validateFirstName  = Pattern.matches("[A-Z][a-z]{3}" , FirstName);  
-		System.out.println(validateFirstName);
+		boolean validateLastName  = Pattern.matches("^[A-Z]{1}[a-z]{2,20}$",LastName);  
+		System.out.println(validateLastName );
 	}
 
 }
