@@ -9,10 +9,14 @@ public class regrexPattern {
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("Enter the Email address : ");
-		String Email = sc.nextLine();
+		String email = sc.nextLine();
 		
-		boolean validateEmail = Pattern.matches("^[a-z](.+)@(\\S+)$", Email);  
-		System.out.println(validateEmail );
+		boolean validateEmail = Pattern.matches("^[a-z](.+)@(\\S+)$", email);  
+		if (validateEmail) {
+		System.out.println(" Eamil is correct ");
+	} else {
+		System.out.println("Email is incorrect ");
+	}
 	}
 
 }
