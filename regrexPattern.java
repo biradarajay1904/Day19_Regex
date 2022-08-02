@@ -13,7 +13,7 @@ public class regrexPattern {
 		String phoneNumber = sc.nextLine();
 		
 		
-		boolean validateLastName  = Pattern.matches("((\\+*)((0[ -]*)*|((91 )*))((\\d{12})+|(\\d{10})+))|\\d{5}([- ]*)\\d{6} ", phoneNumber);  
+		boolean validateLastName  = Pattern.matches("^((91){1})? ?[0-9]{1}[0-9]{9}$", phoneNumber);  
 		System.out.println(validateLastName );
 	}
 
