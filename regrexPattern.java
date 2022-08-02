@@ -12,7 +12,7 @@ public class regrexPattern {
 		String phoneNumber = sc.nextLine();
 		
 		
-		boolean validatephoneNumber = Pattern.matches("^((91){1})? ?[0-9]{1}[0-9]{9}$", phoneNumber);  
+		boolean validatephoneNumber = Pattern.matches("^((91){1})? ?[0-9]{9}$", phoneNumber);  
 		System.out.println(validatephoneNumber);
 	}
 
