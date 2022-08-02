@@ -14,9 +14,9 @@ public class regrexPattern {
 		
 		boolean validatelastName  = Pattern.matches("^[A-Z]{1}[a-z]{2,20}$",lastName);  
 		if (validatelastName) {
-		System.out.println("password is correct ");
+		System.out.println("lastname is correct ");
 	} else {
-		System.out.println("password is incorrect ");
+		System.out.println("lastname is incorrect ");
 	}
 	}
 
