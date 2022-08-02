@@ -12,7 +12,7 @@ public class regrexPattern {
 	
 		
 		
-		boolean validatefirstName  = Pattern.matches("[A-Z][a-z]{3}" , firstName);  
+		boolean validatefirstName  = Pattern.matches("^[A-Z][a-z]{3}$" , firstName);  
 	
 		if (validatefirstName) {
 		System.out.println("firstname is correct ");
