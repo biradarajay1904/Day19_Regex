@@ -13,7 +13,11 @@ public class regrexPattern {
 		
 		
 		boolean validatephoneNumber = Pattern.matches("^((91){1})? ?[0-9]{9}$", phoneNumber);  
-		System.out.println(validatephoneNumber);
+		if (validatephoneNumber) {
+		System.out.println("phone number is correct ");
+	} else {
+		System.out.println("phone number is incorrect ");
+	}
 	}
 
 }
