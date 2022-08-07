@@ -2,68 +2,50 @@ package com.regex;
 
 import java.util.regex.Pattern;
 
-public class Main {
-	private final String FIRST_NAME_PATTERN = "^[A-Z]{1}[a-z]{2,}$";
-	private final String LAST_NAME_PATTERN = "^[A-Z]{1}[a-z]{2,}$";
-	private final String PHONE_PATTERN = "^[1-9][0-9]+[ ]{0,1}+[1-9][0-9]{9}$";
-	private final String PASSWORD_PATTERN = "(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%!]{1}).{8,}";
-	private final String EMAIL_PATTERN = "^[a-zA-Z0-9\\\\-\\\\+\\\\.]+.([a-zA-Z0-9])*@([a-z0-9]+.[a-z]{2,}.([a-z]{2,})?)$";
+@FunctionalInterface
+interface IUserRegistration {
+	String validate(String field) throws UserRegistrationException;
+}
 
-	public boolean validateFirstName(String firstname, String firstName) throws InvalidUserException {
-		try {
-			Pattern pattern = Pattern.compile(FIRST_NAME_PATTERN);
-			return pattern.matcher(firstName).matches();
-		} catch (NullPointerException e) {
-			throw new InvalidUserException("Please enter valid input");
-		}
-	}
+public class UserRegistration {
 
-	public boolean validateLastName(String lastname, String lastName) throws InvalidUserException {
-		try {
-			Pattern pattern = Pattern.compile(LAST_NAME_PATTERN);
-			return pattern.matcher(lastName).matches();
-		} catch (NullPointerException e) {
-			throw new InvalidUserException("Please enter valid input");
-		}
-	}
+	IUserRegistration validFirstName = (fName) -> {
+		boolean matches = Pattern.matches("^[A-Z]+[a-zA-Z]{2,}$", fName);
+		if (matches)
+			return "Valid";
+		else
+			throw new UserRegistrationException("Enter Valid first Name");
+	};
 
-	public boolean validateEmail(String email, String EMAIL_PATTERN) throws InvalidUserException {
-		try {
-			Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-			return pattern.matcher(email).matches();
-		} catch (NullPointerException e) {
-			throw new InvalidUserException("Please enter valid input");
-		}
-	}
+	IUserRegistration validSecondName = (sName) -> {
+		boolean matches = Pattern.matches("^[A-Z]+[a-zA-Z]{2,}$", sName);
+		if (matches)
+			return "Valid";
+		else
+			throw new UserRegistrationException("Enter Valid Second Name");
+	};
 
-	public boolean validatePhone(String PHONE_PATTERN, String phone) throws InvalidUserException {
-		try {
-			Pattern pattern = Pattern.compile(PHONE_PATTERN);
-			return pattern.matcher(phone).matches();
-		} catch (NullPointerException e) {
-			throw new InvalidUserException("Please enter valid input");
-		}
-	}
+	IUserRegistration validEmailId = (email) -> {
+		boolean matches = Pattern.matches("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$", email);
+		if (matches)
+			return "Valid";
+		else
+			throw new UserRegistrationException("Enter Valid Email Id");
+	};
 
-	public boolean validatePassword(String PASSWORD_PATTERN, String password) throws InvalidUserException {
-		try {
-			Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-			return pattern.matcher(password).matches();
-		} catch (NullPointerException e) {
-			throw new InvalidUserException("Please enter valid input");
-		}
-	}
+	IUserRegistration validPhoneNumber = (phoneNumber) -> {
+		boolean matches = Pattern.matches("^91\s[6-9][0-9]{9}$", phoneNumber);
+		if (matches)
+			return "Valid";
+		else
+			throw new UserRegistrationException("Enter Valid Phone Number");
+	};
 
-	public boolean multipleEmailvalidate(String email) throws InvalidUserException {
-		try {
-			if (Pattern.matches(EMAIL_PATTERN, email)) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (NullPointerException e) {
-			throw new InvalidUserException("Please enter valid input");
-		}
-	}
-
+	IUserRegistration validPassword = (password) -> {
+		boolean matches = Pattern.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&+=])?.{8,}$", password);
+		if (matches)
+			return "Valid";
+		else
+			throw new UserRegistrationException("Enter Valid Password");
+	};
 }

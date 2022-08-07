@@ -1,119 +1,193 @@
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import java.util.Arrays;
-import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-public class TestUserValidator {
-	@Test
-	public void givenFirstName_ShouldReturn_True() {
-		boolean result = false;
-		try {
-			ExpectedException expectedException = ExpectedException.none();
-			expectedException.expect(InvalidUserException.class);
-			UserValidator userValidator = new UserValidator();
-			result = userValidator.validateFirstName("^[A-Z]{1}[a-z]{2,}$", "Avinash");
-		} catch (InvalidUserException e) {
-			e.printStackTrace();
-		}
-		Assert.assertTrue(result);
+public class Test {
+
+	static UserRegistration user;
+
+	@BeforeAll
+	public static void initiate() {
+		user = new UserRegistration();
 	}
 
 	@Test
-	public void givenLastName_WhenLastNameStartsWithCapitalLetter_ShouldReturn_True() {
-		boolean result = false;
+	public void givenTextWhenItContainsFirstCapsInFnameAndMinThreeAlphabetsShouldReturnTrue() {
+
 		try {
-			ExpectedException expectedException = ExpectedException.none();
-			expectedException.expect(InvalidUserException.class);
-			UserValidator userValidator = new UserValidator();
-			result = userValidator.validateLastName("^[A-Z]{1}[a-z]{2,}$", "Biradar");
-		} catch (InvalidUserException e) {
-			e.printStackTrace();
+			String actual = user.validFirstName.validate("Abhishek");
+			String expected = "Valid";
+			Assertions.assertSame(actual, expected);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid first Name", e.getMessage());
 		}
-		Assert.assertTrue(result);
 	}
 
 	@Test
-	public void givenEmail_WhenEmailStartsWithSmallLetter_ShouldReturn_True() {
-		boolean result = false;
+	public void givenTextWhenItDoesNotContainsFirstCapsInFnameShouldReturnTrue() {
 		try {
-			ExpectedException expectedException = ExpectedException.none();
-			expectedException.expect(InvalidUserException.class);
-			UserValidator userValidator = new UserValidator();
-			result = userValidator.validateEmail(
-					"^[a-zA-Z0-9\\\\-\\\\+\\\\.]+.([a-zA-Z0-9])*@([a-z0-9]+.[a-z]{2,}.([a-z]{2,})?)$",
-					"avinashbiradar64@gmail.com");
-		} catch (InvalidUserException e) {
-			e.printStackTrace();
+			String actual = user.validFirstName.validate("abhishek");
+			String expected = "Valid";
+			Assertions.assertSame(actual, expected);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid first Name", e.getMessage());
 		}
-		Assert.assertTrue(result);
 	}
 
 	@Test
-	public void givenPhoneNumber_WhenPhoneNumberIsFollowedByCountryCode_True() {
-		boolean result = false;
+	public void givenTextWhenItContainsFirstCapsInFnameButNotMinThreeCharShouldReturnTrue() {
 		try {
-			ExpectedException expectedException = ExpectedException.none();
-			expectedException.expect(InvalidUserException.class);
-			UserValidator userValidator = new UserValidator();
-			result = userValidator.validatePhone("^[1-9][0-9]+[ ]{0,1}+[1-9][0-9]{9}$", "91 9604445258");
-		} catch (InvalidUserException e) {
-			e.printStackTrace();
+			String actual = user.validFirstName.validate("Ab");
+			String expected = "Valid";
+			Assertions.assertSame(actual, expected);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid first Name", e.getMessage());
 		}
-		Assert.assertTrue(result);
 	}
 
 	@Test
-	public void givenPassword_WhenPasswordHaveAtleastOneCapitalLetter_ShouldReturn_True() {
-		boolean result = false;
+	public void givenTextWhenItContainsFirstCapsInSnameAndMinThreeAlphabetsShouldReturnTrue() {
+
 		try {
-			ExpectedException expectedException = ExpectedException.none();
-			expectedException.expect(InvalidUserException.class);
-			UserValidator userValidator = new UserValidator();
-			result = userValidator.validatePassword("(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%!]{1}).{8,}",
-					"Avinash@123");
-		} catch (InvalidUserException e) {
-			e.printStackTrace();
+			String actual = user.validSecondName.validate("Sagar");
+			String expected = "Valid";
+			Assertions.assertSame(actual, expected);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Second Name", e.getMessage());
 		}
-		Assert.assertTrue(result);
 	}
 
-	// UseCase11-Parameterised Test to validate multiple entry for the Email
-	// Address.
-	@RunWith(Parameterized.class)
-	public static class TestFormRegistration {
-		String emailId;
-		boolean expectedResult;
-		private UserValidator emailVariable;
-		UserValidator formObject = new UserValidator();
+	@Test
+	public void givenTextWhenItDoesNotContainsFirstCapsInSnameShouldReturnFalse() {
+		try {
+			String actual = user.validSecondName.validate("sagar");
+			String expected = "Valid";
+			Assertions.assertSame(actual, expected);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Second Name", e.getMessage());
+		}
+	}
 
-		public TestFormRegistration(String emailId, boolean expectedResult) {
-			this.emailId = emailId;
-			this.expectedResult = expectedResult;
+	@Test
+	public void givenTextWhenItContainsFirstCapsInSnameButNotMinThreeCharShouldReturnFalse() {
+		try {
+			String actual = user.validSecondName.validate("Sa");
+			String expected = "Valid";
+			Assertions.assertSame(actual, expected);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Second Name", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenEmailWhenDoesNotContainsAtTheRateShouldReturnFalse() {
+		try {
+			String actualResult = user.validEmailId.validate("kuabc.yahoo.com");
+			String expectedRes = "Valid";
+			Assertions.assertEquals(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Email Id", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenEmailWhenAccordingToProperReqShouldReturnTrue() {
+		try {
+			String actualResult = user.validEmailId.validate("abc.xyz@bl.co.in");
+			String expectedRes = "Valid";
+			Assertions.assertEquals(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Email Id", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenMobileNumberWithSpaceAndProperNumberShouldReturnTrue() {
+		try {
+			String actualResult = user.validPhoneNumber.validate("91 9066939699");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Phone Number", e.getMessage());
 		}
 
-		@Before
-		public void initialize() {
-			emailVariable = new UserValidator();
+	}
+
+	@Test
+	public void givenMobileNumberWithoutSpaceAndProperNumberShouldReturnFalse() {
+		try {
+			String actualResult = user.validPhoneNumber.validate("919066939699");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Phone Number", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenMobileNumberWithSpaceButNotProperCountryCodeShouldReturnFalse() {
+		try {
+			String actualResult = user.validPhoneNumber.validate("819066939699");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Phone Number", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenPasswordWithoutAnUpperCaseShouldReturnFalse() {
+		try {
+			String actualResult = user.validPassword.validate("abccc@123");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Password", e.getMessage());
 		}
 
-		@Parameterized.Parameters
-		public static List<Object[]> emails() {
-			return Arrays.asList(new Object[][] { { "Avinash@gmail.com", true }, { "Avinash@gmail.co.in", true },
-					{ "avinashgmail.com", false } });
-		}
+	}
 
-		@Test
-		public void testEmailId() throws InvalidUserException {
-			try {
-				System.out.println("parameter email is->" + emailId);
-				Assert.assertEquals(expectedResult, emailVariable.multipleEmailvalidate(emailId));
-			} catch (NullPointerException e) {
-				System.out.println(e);
-			}
+	@Test
+	public void givenPasswordWithoutASpecialCharShouldReturnFalse() {
+		try {
+			String actualResult = user.validPassword.validate("abccc123");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Password", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenPasswordWithoutALowerCaseShouldReturnFalse() {
+		try {
+			String actualResult = user.validPassword.validate("AAA@123");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Password", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenPasswordWithoutMinNumOfCharShouldReturnFalse() {
+		try {
+			String actualResult = user.validPassword.validate("Ac@123");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Password", e.getMessage());
+		}
+	}
+
+	@Test
+	public void givenPasswordWithProperRequirementsShouldReturnTrue() {
+		try {
+			String actualResult = user.validPassword.validate("Abcd@123");
+			String expectedRes = "Valid";
+			Assertions.assertSame(actualResult, expectedRes);
+		} catch (UserRegistrationException e) {
+			Assertions.assertEquals("Enter Valid Password", e.getMessage());
 		}
 	}
 }
